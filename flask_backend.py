@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # Disable GPU usage
 from flask import Flask, request, jsonify
 import pandas as pd
 import tensorflow as tf
@@ -208,7 +210,8 @@ def receive_traffic():
         df_ordered = df_typed[expected_features_ordered]
         
         # Make predictions
-        predictions = model.predict(df_ordered)   
+        predictions = model.predict(df_ordered, batch_size=32)   
+            
         print("[PREDICTIONS]")
         print(predictions)
         

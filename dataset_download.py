@@ -54,6 +54,10 @@ def download_dataset(zip_name = 'cicids2017.zip', extract = True):
         else:
             _logger.info(f"Download complete: {ds_zip_path}")
 
+        # Extract the dataset if [extract] option is True
+        if extract:
+            extract_zip(ds_zip_path, remove = False)
+                        
     else:
         _logger.warning(f"Dataset {ds_zip_path} already exists. Skipping download.")
 

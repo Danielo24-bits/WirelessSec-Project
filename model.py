@@ -20,7 +20,7 @@ from dataset_preprocessing import (
     extract_features_and_labels, 
     balance_dataset,
 )
-from constants import RANDOM_SEED, STORED_MODEL_PATH
+from constants import RANDOM_SEED, STORED_MODEL_PATH, STORED_SCALER_PATH, TF_DEVICE
 from log import _logger
 
 tf.config.experimental.enable_op_determinism()
@@ -68,8 +68,9 @@ if __name__ == '__main__':
     )
     X_train_bal, y_train_bal = balance_dataset(X_train, y_train, ratio=0.25)
 
-    model = build_dense_model(labels_encoded)
-    model.fit(X_train, y_train, epochs=6, batch_size=32)
+    with tf.device(TF_DEVICE):
+        model = build_dense_model(labels_encoded)
+        model.fit(X_train, y_train, epochs=6, batch_size=32)
     
     if os.path.exists(STORED_MODEL_PATH):
         _logger.info(f"Model already exists at {STORED_MODEL_PATH}. Overwriting...")
